@@ -8,15 +8,15 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class StringTest extends IOTest{
+public class StringTest extends IOTest {
     @Test
     void replace() {
         String actual = "abc".replace("b", "d");
@@ -24,43 +24,42 @@ public class StringTest extends IOTest{
     }
 
     @Test
-    void splitTest1(){
+    void splitTest1() {
         String[] actual = "1,2".split(",");
         assertThat(actual[0]).contains("1");
     }
 
     @Test
-    void splitTest2(){
+    void splitTest2() {
         String[] actual = "1,2".split(",");
         assertThat(actual[1]).contains("2");
     }
 
     @Test
-    void splitTest3(){
+    void splitTest3() {
         String[] actual = "1".split(",");
         assertThat(actual).containsExactly("1");
     }
 
     @Test
-    void splitTest4(){
-        String actual ="(1,2)".substring(1,4);
+    void splitTest4() {
+        String actual = "(1,2)".substring(1, 4);
         System.out.println(actual);
     }
 
     @Test
-    void charAtTest(){
+    void charAtTest() {
         char actual = "abc".charAt(2);
     }
 
     @Test
-    void charAtTestError(){
-        assertThatThrownBy(()->{
+    void charAtTestError() {
+        assertThatThrownBy(() -> {
             throw new IndexOutOfBoundsException("Wrong");
-        }).isInstanceOf(IndexOutOfBoundsException.class)
-                .hasMessageContaining("Wrong");
+        }).isInstanceOf(IndexOutOfBoundsException.class).hasMessageContaining("Wrong");
     }
 
-//    ==========================================
+    //    ==========================================
     public class SetTest {
         private Set<Integer> numbers;
 
@@ -80,6 +79,7 @@ public class StringTest extends IOTest{
             Assertions.assertThat(this.numbers.size()).isEqualTo(3);
         }
     }
+
     @Test
     void testSetTest() {
         SetTest setTest = new SetTest();
@@ -96,10 +96,7 @@ public class StringTest extends IOTest{
     }
 
     @ParameterizedTest
-    @CsvSource(
-            value = {"1:true", "2:true", "3:true", "4:false", "5:false"},
-            delimiter = ':'
-    )
+    @CsvSource(value = {"1:true", "2:true", "3:true", "4:false", "5:false"}, delimiter = ':')
     void checkNumInSet(String input, String expected) {
         SetTest setTest = new SetTest();
         setTest.setUp();
@@ -108,11 +105,11 @@ public class StringTest extends IOTest{
         assertEquals(expected, String.valueOf(actualValue));
     }
 
-//    =====================================================================
+    //    =====================================================================
     String[] inputStringConvertToList() {
 
         systemIn("2 + 3 * 4 / 2 - 5 - 5");
-        return this.ListConverter();
+        return ListConverter();
     }
 
     String[] ListConverter() {
@@ -129,7 +126,7 @@ public class StringTest extends IOTest{
         String[] calSymbolList = toCalculateSymbolsArray(calList);
         int result = numberList[0];
 
-        for(int i = 0; i < calSymbolList.length; ++i) {
+        for (int i = 0; i < calSymbolList.length; ++i) {
             int CalResult;
             if (calSymbolList[i].equals("+")) {
                 CalResult = add(result, numberList[i + 1]);
@@ -152,7 +149,7 @@ public class StringTest extends IOTest{
     int[] stringNumArrayToIntArray(String[] originalList) {
         int[] newNumberList = new int[originalList.length / 2 + 1];
 
-        for(int index = 0; index < originalList.length; ++index) {
+        for (int index = 0; index < originalList.length; ++index) {
             if (index % 2 == 0) {
                 newNumberList[index / 2] = stringNumToIntConverter(originalList[index]);
             }
@@ -164,7 +161,7 @@ public class StringTest extends IOTest{
     String[] toCalculateSymbolsArray(String[] originalList) {
         String[] newCalSymbolList = new String[originalList.length / 2];
 
-        for(int index = 0; index < originalList.length; ++index) {
+        for (int index = 0; index < originalList.length; ++index) {
             if (index % 2 == 1) {
                 newCalSymbolList[index / 2] = originalList[index];
             }
@@ -195,5 +192,44 @@ public class StringTest extends IOTest{
         return b != 0 ? a / b : 0;
     }
 
+
+    @Test
+    void baseballPlayground() {
+        NumberBaseballGame game = new NumberBaseballGame();
+
+//        게임 시작 여부 확인하기
+        System.out.println("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
+        game.startGameInput("1");
+
+        Scanner startGameInput = new Scanner(System.in);
+        String startGameInputData = startGameInput.nextLine();
+
+//        각 번호를 List로 출력
+//        컴퓨터의 3자리수 무작위 추출본을 List로 변환
+        String computerGeneratedNumbers = game.generateRandomNumbers();
+        List<Integer> computerGeneratedNumberList = game.stringNumbersToIntListConverter(computerGeneratedNumbers);
+        System.out.println("컴퓨터가 추출한 값 :" + computerGeneratedNumbers);
+
+        if (startGameInputData.equals("1")) {
+
+//        사용자의 번호 입력
+            System.out.println("숫자를 입력해주세요");
+            String userInput = "456";
+            game.userGuessInput(userInput);
+            System.out.println("사용자가 입력한 값 : " + userInput);
+
+
+//        유저가 입력한 3자리 숫자를 List로 변환
+            Scanner userGuessInput = new Scanner(System.in);
+            String userGuessInputData = userGuessInput.nextLine();
+            List<Integer> userInsertedNumberList = game.stringNumbersToIntListConverter(userGuessInputData);
+
+
+            assertThat(userInsertedNumberList).hasSameElementsAs(computerGeneratedNumberList);
+
+        }
+
+
+    }
 
 }
