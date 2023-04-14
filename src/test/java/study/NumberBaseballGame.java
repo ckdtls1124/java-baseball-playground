@@ -1,6 +1,6 @@
 package study;
 
-import sun.tools.java.Scanner;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
