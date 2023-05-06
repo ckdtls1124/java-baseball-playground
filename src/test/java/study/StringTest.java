@@ -1,5 +1,6 @@
 package study;
 
+import numberbaseball.InputNumber;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,6 +8,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -189,42 +191,8 @@ public class StringTest extends IOTest {
 
 
     @Test
-    void baseballPlayground() {
-        NumberBaseballGame game = new NumberBaseballGame();
-
-//        게임 시작 여부 확인하기
-        System.out.println("게임을 새로 시작하려면 1, 종료하려면 2를 입력하세요.");
-        game.startGameInput("1");
-
-        Scanner startGameInput = new Scanner(System.in);
-        String startGameInputData = startGameInput.nextLine();
-
-//        각 번호를 List로 출력
-//        컴퓨터의 3자리수 무작위 추출본을 List로 변환
-        String computerGeneratedNumbers = game.generateRandomNumbers();
-        List<Integer> computerGeneratedNumberList = game.stringNumbersToIntListConverter(computerGeneratedNumbers);
-        System.out.println("컴퓨터가 추출한 값 :" + computerGeneratedNumbers);
-
-        if (startGameInputData.equals("1")) {
-
-//        사용자의 번호 입력
-            System.out.println("숫자를 입력해주세요");
-            String userInput = "456";
-            game.userGuessInput(userInput);
-            System.out.println("사용자가 입력한 값 : " + userInput);
-
-
-//        유저가 입력한 3자리 숫자를 List로 변환
-            Scanner userGuessInput = new Scanner(System.in);
-            String userGuessInputData = userGuessInput.nextLine();
-            List<Integer> userInsertedNumberList = game.stringNumbersToIntListConverter(userGuessInputData);
-
-
-            assertThat(userInsertedNumberList).hasSameElementsAs(computerGeneratedNumberList);
-
-        }
-
-
+    void baseballPlayground() throws IOException {
+        InputNumber.inputNum();
     }
 
 }
