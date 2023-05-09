@@ -3,7 +3,9 @@ package numberbaseball;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class InputNumber {
 
@@ -13,21 +15,19 @@ public class InputNumber {
 
     }
 
-    public static int changeInputNumToIntNum(String inputNums){
+    public static char[] changeInputStringToIntArray(String inputNums){
 
-        StringBuilder inputNumLetters= new StringBuilder(inputNums);
+        char[] result = new char[inputNums.length()];
+        for(int i=0; i<result.length; i++){
+            result[i] = inputNums.charAt(i);
+        }
 
-        char[] eachLettersArray = new char[inputNums.length()];
+        return result;
+    }
 
-
-
-
-
-
-
-
-
-        return 0;
+    public static int charToInt(char charInput){
+        int result = charInput - '0';
+        return result;
     }
 
 }
